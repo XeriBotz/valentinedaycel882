@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PILIH SEKARANG!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Gaya warna lebih berani, gak cuma pink pastel */
+        :root { --utama: #ff2e63; --aksen: #252a34; --bg: #fff5f7; }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; 
+            background: var(--bg); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+
+        /* Tombol Musik - Gaya Retro */
+        .music-ctrl { 
+            position: fixed; top: 15px; right: 15px; z-index: 1000; 
+            background: var(--aksen); color: white; border: none; 
+            padding: 10px; border-radius: 8px; cursor: pointer;
+            font-size: 14px; font-weight: bold; transform: rotate(3deg);
+        }
+
+        .box { 
+            background: #fff; 
+            padding: 35px 25px; 
+            border-radius: 12px; 
+            box-shadow: 12px 12px 0px var(--aksen); /* Shadow kaku gaya retro */
+            text-align: center; 
+            width: 90%; 
+            max-width: 360px; 
+            border: 4px solid var(--aksen); 
+            position: relative; 
+            z-index: 2;
+        }
+
+        h1 { 
+            font-family: 'Caveat', cursive; 
+            font-size: 3.2rem; 
+            color: var(--utama); 
+            margin: 0 0 20px 0; 
+            transform: rotate(-2deg); 
+        }
+        
+        .img-area { 
+            width: 100%; 
+            height: 230px; 
+            background: #eee; 
+            border-radius: 8px; 
+            margin-bottom: 25px; 
+            overflow: hidden; 
+            border: 3px solid var(--aksen);
+            transform: rotate(1deg);
+        }
+
+        .img-area img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .btn-space { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 15px; 
+            min-height: 100px; 
+            position: relative; 
+        }
+        
+        button { 
+            border: 3px solid var(--aksen); 
+            border-radius: 8px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            font-family: inherit; 
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            transition: 0.1s;
+        }
+
+        #ya { 
+            background: var(--utama); 
+            color: white; 
+            z-index: 99999; 
+            box-shadow: 5px 5px 0px var(--aksen);
+        }
+        
+        #ya:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0px var(--aksen); }
+
+        #gak { 
+            background: #fff; 
+            color: var(--aksen); 
+            box-shadow: 5px 5px 0px var(--aksen);
+        }
+
+        /* Tampilan Akhir */
+        .pesan-akhir {
+            font-weight: bold;
+            color: var(--aksen);
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        .link-kado { 
+            display: inline-block; 
+            padding: 15px 25px; 
+            background: #00d1ff; 
+            color: var(--aksen); 
+            text-decoration: none; 
+            border-radius: 8px; 
+            margin-top: 15px; 
+            font-weight: 900; 
+            border: 3px solid var(--aksen);
+            box-shadow: 6px 6px 0px var(--aksen);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="music-ctrl" onclick="toggleMusic()" id="muzikBtn">PLAY MUSIK 🎵</button>
+    <audio id="lagu" src="musik.mp3" loop></audio>
+
+    <div class="box" id="wadah">
+        <h1 id="judul">Be my valentine? 🌹</h1>
+        
+        <div class="img-area" id="frame">
+            <img id="foto" src="9.jpg">
+        </div>
+
+        <div class="btn-space" id="tombolan">
+            <button id="ya">MAU!</button>
+            <button id="gak">Gak</button>
+        </div>
+    </div>
+
+    <script>
+        const ya = document.getElementById('ya');
+        const gak = document.getElementById('gak');
+        const judul = document.getElementById('judul');
+        const foto = document.getElementById('foto');
+        const wadah = document.getElementById('wadah');
+        const lagu = document.getElementById('lagu');
+        const tombolan = document.getElementById('tombolan');
+
+        let gedenya = 1;
+        let lari = 0;
+        let musikJalan = false;
+
+        function toggleMusic() {
+            if (musikJalan) { 
+                lagu.pause(); 
+                document.getElementById('muzikBtn').innerText = "PLAY MUSIK 🎵"; 
+            } else { 
+                lagu.play(); 
+                document.getElementById('muzikBtn').innerText = "PAUSE ⏸️"; 
+            }
+            musikJalan = !musikJalan;
+        }
+
+        const ledekan = ["Gak kena!", "Meleset!", "eitsss", "Coba lagi!", "Wleee!", "Hampir!", "Nyerah aja!"];
+
+        function kabur() {
+            lari++;
+            gak.style.position = 'fixed';
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            gak.style.left = x + 'px';
+            gak.style.top = y + 'px';
+            gak.innerText = ledekan[lari % ledekan.length];
+            gedenya += 1.5; 
+            ya.style.transform = `scale(${gedenya}) rotate(${lari * 2}deg)`;
+
+            if (gedenya > 6) {
+                document.getElementById('frame').style.display = "none";
+                judul.style.display = "none";
+                wadah.style.border = "none";
+                wadah.style.background = "transparent";
+                wadah.style.boxShadow = "none";
+            }
+        }
+
+        gak.addEventListener('mouseover', kabur);
+        gak.addEventListener('touchstart', (e) => { e.preventDefault(); kabur(); });
+
+        // FUNGSI UTAMA AGAR MUSIK JALAN TERUS
+        ya.onclick = function() {
+            if(!musikJalan) toggleMusic();
+            
+            gak.remove();
+            ya.style.display = "none";
+            
+            wadah.style.background = "#fff";
+            wadah.style.border = "4px solid var(--aksen)";
+            wadah.style.boxShadow = "12px 12px 0px var(--aksen)";
+            document.getElementById('frame').style.display = "block";
+            judul.style.display = "block";
+            
+            judul.innerHTML = "CIEEEE! ❤️";
+            judul.style.transform = "rotate(0deg)";
+            foto.src = "10.jpg"; 
+            
+            // Kita ubah link kado agar memicu munculnya halaman valentine tanpa pindah page
+            tombolan.innerHTML = `
+                <div class="pesan-akhir">
+                    <p>Capek kan? Makanya jangan nolak huuu 😛</p>
+                    <button onclick="bukaValentine()" class="link-kado" style="cursor:pointer">Klik ini dehh :3</button>
+                </div>
+            `;
+        };
+
+        // Fungsi memanggil halaman valentine.html ke depan muka (Overlay)
+        function bukaValentine() {
+            // Buat kontainer hitam full screen
+            const overlay = document.createElement('div');
+            overlay.id = 'v-layer';
+            overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; z-index:999999; background:#0a0a0a; overflow:hidden;";
+            
+            // Masukkan valentine.html lewat iframe
+            overlay.innerHTML = `<iframe src="valentine.html" style="width:100%; height:100%; border:none;"></iframe>`;
+            
+            document.body.appendChild(overlay);
+        }
+    </script>
+</body>
+</html>
